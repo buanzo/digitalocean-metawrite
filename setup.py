@@ -33,7 +33,7 @@ setup(name='dometawrite',
       python_requires='>=3.6',
       packages=['dometawrite'],
       package_dir={'dometawrite': 'src/dometawrite'},
-#      package_data={'dometawrite': ['src/dometawrite/templates/*.jinja']},
+      package_data={'dometawrite': ['src/dometawrite/templates/*.jinja']},
       include_package_data=True,
       install_requires=requirements,
       entry_points={
