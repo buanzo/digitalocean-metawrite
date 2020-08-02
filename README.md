@@ -13,7 +13,7 @@ easy access to your droplets. Picture this:
     ~ $ dometawrite --template ssh-config  \
                     --api-key $DO_API_KEY  \
                     --output /home/example/.ssh/digitalocean_droplets \
-                    --template-var=user:root --template-var=keyfile:/home/example/id_rsa_digitalocean
+                    -u user:remoteUser -u keyfile:/home/example/id_rsa_digitalocean
 
 The above command will render the ssh-config dometawrite template, and write the output to the /home/example/.ssh/digitalocean_droplets file.
 
@@ -37,7 +37,7 @@ simply:
 
     ssh root@another_droplet
 
-# Example: Create ansible inventory
+# Example: Create ansible inventory (This template is not yet available)
 
 Maybe you use ansible, and you want to update your hosts inventory dynamically:
 
@@ -50,13 +50,20 @@ all the required code to output a valid Ansible Inventory file.
 
 # Templating Ideas
 
-Templates will have to indicate endpoint requirements. For example, for the ssh-config template:
+Templates will have to indicate endpoint requirements, and specific user variables.
+For example, for the ssh-config template:
 
-    {% set required_endpoints = ['/v2/droplets'] %}
+    {# Your first TWO(2) set commands MUST indicate endpoint_requirements and
+    userdata_requirements #}
+    {% set endpoint_requirements = ['droplets'] %}
+    {% set userdata_requirements = ['user','keyfile'] %}
+
     {% for droplet in droplets.droplets %}
     Host {{ droplet.name }}
-    etcetc
-
+    HostName {{ droplet.networks.v4[0].ip_address }}
+    User {{ userdata.user }}
+    IdentityFile {{ userdata.keyfile }}
+    
     {% endfor %}
 
 
