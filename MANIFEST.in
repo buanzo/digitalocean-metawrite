@@ -1,0 +1,2 @@
+include src/dometawrite/templates/sshconfig.jinja
+include src/dometawrite/templates/debug.jinja

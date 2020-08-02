@@ -8,7 +8,8 @@ from jinja2 import (Environment,
                     contextfunction as jinja2ctxfunc)
 from pprint import pprint
 
-__version__ = '0.1.6'
+__version__ = '0.1.7'
+
 
 @jinja2ctxfunc
 def get_context(c):
@@ -40,10 +41,6 @@ class DOMetaWrite():
                  user_vars=None,
                  api_key=None,
                  debug=False):
-        if api_key is None:
-            raise(ValueError('DOMetaWrite: api_key cannot be None'))
-        else:
-            self.api_key = api_key
         self._RESERVED_TPL_VARS = ['endpoint_requirements',
                                    'userdata_requirements']
         self.apiUrlBase = 'https://api.digitalocean.com/v2/'
@@ -69,14 +66,27 @@ class DOMetaWrite():
         self.setup_template_data()
 
         self.tpl_reqs = self.get_template_requirements()
+        # If the only endpoint requirement is 'metadata'
+        # no api_key is required
+        if api_key is None and not self.metadata_only():
+            printerr('DOMetaWrite: You need to specify DO API KEY.')
+            sys.exit(1)
+        else:
+            self.api_key = api_key
         if self.debug:
             printerr(self.tpl_reqs)
 
+    def metadata_only(self):
+        if self.tpl_reqs['endpoint'] == ['metadata']:
+            return(True)
+        return(False)
+
     def get_missing_user_vars(self):
         retObj = []
-        for var in self.tpl_reqs['userdata']:
-            if var not in self.user_vars:
-                retObj.append(var)
+        if 'userdata' in self.tpl_reqs.keys():
+            for var in self.tpl_reqs['userdata']:
+                if var not in self.user_vars:
+                    retObj.append(var)
         return(retObj)
 
     def execute_api_calls(self):
@@ -103,7 +113,10 @@ class DOMetaWrite():
         for i in range(len(self.parsed_content.body)):
             if not hasattr(self.parsed_content.body[i], 'target'):
                 continue
-            target_name = self.parsed_content.body[i].target.name
+            target = self.parsed_content.body[i].target
+            if not hasattr(target, 'name'):
+                continue
+            target_name = target.name
             if target_name in self._RESERVED_TPL_VARS:
                 nodeitems = self.parsed_content.body[i].node.items
                 target_values = [a.value for a in nodeitems]
@@ -119,11 +132,23 @@ class DOMetaWrite():
             raise(ValueError('get_api_dictionary: endpoint cant be None'))
 
         if endpoint == 'metadata':
+            # No need for api key nor headers. shorter timeout.
             api = self.dropletApiUrl
+            headers = {}
+            timeout = 5
         else:
             api = '{}{}'.format(self.apiUrlBase, endpoint)
-        headers = {'Authorization': 'Bearer {}'.format(self.api_key)}
-        r = requests.get(api, headers=headers)
+            headers = {'Authorization': 'Bearer {}'.format(self.api_key)}
+            timeout = 30
+        try:
+            r = requests.get(api, headers=headers, timeout=timeout)
+        except Exception as exc:
+            printerr('DOMetaWrite: Error for https request endpoint={}'
+                     .format(endpoint))
+            if endpoint == 'metadata':
+                printerr('DOMetaWrite: Metadata only works on Droplets')
+            printerr(exc)
+            sys.exit(3)
         return(r.json())
 
     def dictify_user_vars(self, user_vars):
@@ -203,11 +228,6 @@ missing variable will be reported prior to stopping execution.''')
                         help='Enable debugging messages.')
 
     args = parser.parse_args()
-
-    if args.api_key is None:
-        printerr('DOMetaWrite: You need to specify DIGITALOCEAN ACCESS TOKEN.')
-        parser.print_help()
-        sys.exit(1)
 
     if args.template is None:
         printerr('DOMetaWrite: You must indicate desired template using -t.')

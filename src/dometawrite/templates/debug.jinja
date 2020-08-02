@@ -1,4 +1,4 @@
-{% set endpoint_requirements = ['droplets'] %}
+{% set endpoint_requirements = ['metadata'] %}
 {% for key, value in context().items() %}
     {% if not callable(value) %}
         {{ key }}:{{ value }}
