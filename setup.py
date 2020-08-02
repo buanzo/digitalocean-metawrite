@@ -22,9 +22,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(name='dometawrite',
       version=get_version(),
-      description='''Create configuration files using templates that receive
-DigitalOcean APIv2 data and droplet metadata, plus user variables, for example,
-to create SSH config files or ansible host inventories.''',
+      description='Creates configuration files based on DigitalOcean API Data.',
       long_description=long_description,
       keywords='''configuration,api,templates,digitalocean,devops,sysadmin''',
       author='Arturo "Buanzo" Busleiman',
@@ -35,8 +33,7 @@ to create SSH config files or ansible host inventories.''',
       python_requires='>=3.6',
       packages=['dometawrite'],
       package_dir={'dometawrite': 'src/dometawrite'},
-      package_data={'dometawrite': ['src/templates/*.jinja']},
-      namespace_packages=[],
+#      package_data={'dometawrite': ['src/dometawrite/templates/*.jinja']},
       include_package_data=True,
       install_requires=requirements,
       entry_points={

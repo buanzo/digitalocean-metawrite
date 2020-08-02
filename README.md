@@ -59,3 +59,7 @@ Templates will have to indicate endpoint requirements. For example, for the ssh-
 
     {% endfor %}
 
+
+# TODO
+
+* add testing https://python-packaging.readthedocs.io/en/latest/testing.html
