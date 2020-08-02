@@ -44,6 +44,27 @@ This is a useful feature, but please do NOT --output directly to your authorized
     dometawrite --template authorizedkeys \
                 --api-key $DO_API_KEY
 
+# Example: Create DROPLET_NAME, DROPLET_TAGS, DROPLET_REGION environment variables in bash
+
+Run this in your droplet:
+
+    dometawrite -t droplet_envvars
+
+You will get a bash-compatible output with a number of export commands.
+
+If you are running a modern-enough Linux distribution with /dev/fd available, you can then
+add this line to your ~/.bashrc:
+
+    source <(dometawrite -t droplet_envvars)
+
+You can use that in Ubuntu 20.04, maybe 19.x - But not in 18.04, where you would need to:
+
+    dometawrite -t droplet_envvars -o ~/.de.tmp
+    source ~/.de.tmp
+
+From then on, when you access your droplet's bash shell you will have a couple additional
+variables at your disposal.
+
 # Example: Create ansible inventory (This template is not yet available)
 
 Maybe you use ansible, and you want to update your hosts inventory dynamically:
