@@ -3,4 +3,5 @@
 # Author: Arturo 'Buanzo' Busleiman
 export DROPLET_NAME="{{ metadata.hostname }}"
 export DROPLET_REGION="{{ metadata.region }}"
-export DROPLET_TAGS="{{ metadata.tags }}"
+export DROPLET_TAGS="{% for tag in metadata.tags %}{{ tag }}{{ "," if not loop.last }}"{% endfor %}
+
