@@ -8,7 +8,7 @@ from jinja2 import (Environment,
                     contextfunction as jinja2ctxfunc)
 from pprint import pprint
 
-__version__ = '0.1.8'
+__version__ = '0.1.9'
 
 
 @jinja2ctxfunc

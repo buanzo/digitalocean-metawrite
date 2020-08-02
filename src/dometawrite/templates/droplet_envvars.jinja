@@ -1,0 +1,6 @@
+{% set endpoint_requirements = ['metadata'] %}
+# export bash variables names with current droplet data
+# Author: Arturo 'Buanzo' Busleiman
+export DROPLET_NAME="{{ metadata.hostname }}"
+export DROPLET_REGION="{{ region }}"
+export DROPLET_TAGS="{{ tags }}"
