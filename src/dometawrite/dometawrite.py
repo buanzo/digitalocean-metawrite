@@ -8,7 +8,7 @@ from jinja2 import (Environment,
                     contextfunction as jinja2ctxfunc)
 from pprint import pprint
 
-__version__ = '0.1.7'
+__version__ = '0.1.8'
 
 
 @jinja2ctxfunc
@@ -44,7 +44,7 @@ class DOMetaWrite():
         self._RESERVED_TPL_VARS = ['endpoint_requirements',
                                    'userdata_requirements']
         self.apiUrlBase = 'https://api.digitalocean.com/v2/'
-        self.dropletApiUrl = 'http://169.254.169.254/metadata/v1/'
+        self.dropletApiUrl = 'http://169.254.169.254/metadata/v1.json'
         self.debug = debug
         self.output_file = output_file
         self.user_vars = self.dictify_user_vars(user_vars)
