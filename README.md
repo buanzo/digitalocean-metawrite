@@ -37,6 +37,13 @@ simply:
 
     ssh root@another_droplet
 
+# Example: Create OpenSSH AuthorizedKeysFile-compatible output using from your DigitalOcean account.
+
+This is a useful feature, but please do NOT --output directly to your authorized_keys file!
+
+    dometawrite --template authorizedkeys \
+                --api-key $DO_API_KEY
+
 # Example: Create ansible inventory (This template is not yet available)
 
 Maybe you use ansible, and you want to update your hosts inventory dynamically:
@@ -66,6 +73,19 @@ For example, for the ssh-config template:
     
     {% endfor %}
 
+
+Some endpoints include '/' in their name. The template-context variable name
+is automatically named replacing all instances of '/' with '_'. For example,
+take the authorizedkeys template:
+
+    {% set endpoint_requirements = ['account/keys'] %}
+    {% for key in account_keys.ssh_keys %}
+    # Key "{{ key.name }}" ID={{ key.id }} Fingerprint={{key.fingerprint}}
+    {{ key.public_key }}
+    {% endfor %}
+
+You can see that we iterate over each key using account_keys.ssh_keys as source,
+but the endpoint_requirements is set to call 'accounts/keys' DO APIv2 endpoint.
 
 # TODO
 
