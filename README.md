@@ -55,13 +55,15 @@ Maybe you use ansible, and you want to update your hosts inventory dynamically:
 The template will receive a python dictionary with all necessary information. Jinja2 supports advanced logic, so it can easily contain
 all the required code to output a valid Ansible Inventory file.
 
-# Templating Ideas
+# Templating Syntax
+
+We use jinja2 for the templating support, so anything it supports, dometawrite supports.
+But we do have some specific requirements:
 
 Templates will have to indicate endpoint requirements, and specific user variables.
+
 For example, for the ssh-config template:
 
-    {# Your first TWO(2) set commands MUST indicate endpoint_requirements and
-    userdata_requirements #}
     {% set endpoint_requirements = ['droplets'] %}
     {% set userdata_requirements = ['user','keyfile'] %}
 
@@ -86,6 +88,11 @@ take the authorizedkeys template:
 
 You can see that we iterate over each key using account_keys.ssh_keys as source,
 but the endpoint_requirements is set to call 'accounts/keys' DO APIv2 endpoint.
+
+## Note
+
+The syntax is bound to change a bit to support features (for example, author
+details support, template description, etc).
 
 # TODO
 
