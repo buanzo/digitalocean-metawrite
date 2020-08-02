@@ -95,7 +95,7 @@ class DOMetaWrite():
             if self.debug:
                 printerr('About to call endpoint={}'.format(endpoint))
             ed = self.get_api_dictionary(endpoint=endpoint)
-            retObj[endpoint] = ed
+            retObj[endpoint.replace('/', '_')] = ed
             if self.debug:
                 pprinterr(ed)
         self.apiData = retObj

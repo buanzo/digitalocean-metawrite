@@ -70,3 +70,4 @@ For example, for the ssh-config template:
 # TODO
 
 * add testing https://python-packaging.readthedocs.io/en/latest/testing.html
+* add pagination support
