@@ -20,7 +20,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 
-setup(name='wordpressupdater',
+setup(name='dometawrite',
       version=get_version(),
       description='''Create configuration files using templates that receive
 DigitalOcean APIv2 data and droplet metadata, plus user variables, for example,

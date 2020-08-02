@@ -8,6 +8,7 @@ from jinja2 import (Environment,
                     contextfunction as jinja2ctxfunc)
 from pprint import pprint
 
+__version__ = '0.1.0'
 
 @jinja2ctxfunc
 def get_context(c):
