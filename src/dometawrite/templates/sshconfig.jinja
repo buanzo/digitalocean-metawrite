@@ -7,7 +7,9 @@ userdata_requirements #}
 
 {% for droplet in droplets.droplets %}
 Host {{ droplet.name }}
-HostName {{ droplet.networks.v4[0].ip_address }}
+{% for iface in droplet.networks.v4 %}
+{{ "# " if not loop.first }}HostName {{ iface.ip_address }}
+{% endfor %}
 User {{ userdata.user }}
 IdentityFile {{ userdata.keyfile }}
 

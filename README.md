@@ -119,3 +119,4 @@ details support, template description, etc).
 
 * add testing https://python-packaging.readthedocs.io/en/latest/testing.html
 * add pagination support
+* Think about --private-only andd/or --public-only modes? should be an arg, or a template-level function?

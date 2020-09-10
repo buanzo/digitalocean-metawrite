@@ -1,0 +1,6 @@
+{# Your first TWO(2) set commands MUST indicate endpoint_requirements and
+userdata_requirements #}
+{% set endpoint_requirements = ['droplets'] %}
+{% for droplet in droplets.droplets %}
+{{ droplet.name }} 
+{% endfor %}
